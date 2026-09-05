@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<script>
+  // Enable entrance animations only if this browser can actually run them.
+  // If anything here fails, the page simply renders fully visible instead of blank.
+  try{
+    if('IntersectionObserver' in window && 'requestAnimationFrame' in window){
+      document.documentElement.className += ' js-anim';
+    }
+  }catch(e){}
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عبدالرحمن عباس | محاسب قانوني معتمد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0b1e3d;
+    --navy-2:#0f2b52;
+    --navy-3:#132f5c;
+    --gold:#c99a4b;
+    --gold-light:#e8c98a;
+    --cream:#f6f4ef;
+    --ink:#182238;
+    --muted:#5c6a7c;
+    --white:#ffffff;
+    --line:#e3ddce;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  /* Clip horizontal overflow at the root. Entrance animations park elements
+     off-screen sideways, which otherwise widens the page and creates the
+     side-margin / horizontal-scroll bug on mobile. */
+  html, body{overflow-x:hidden;max-width:100%;}
+  @supports (overflow:clip){
+    html, body{overflow-x:clip;}
+  }
+  body{
+    font-family:'Tajawal',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4,.display{font-family:'Cairo',sans-serif;}
+  img{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+  ::selection{background:var(--gold-light);color:var(--navy);}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;scroll-behavior:auto !important;}
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    padding:18px 0;
+    transition:background .35s ease, padding .35s ease, box-shadow .35s ease;
+  }
+  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;}
+  header.scrolled{
+    background:rgba(11,30,61,.97);
+    padding:10px 0;
+    box-shadow:0 8px 30px -12px rgba(0,0,0,.4);
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand img{height:46px;width:auto;transition:height .3s ease;}
+  header.scrolled .brand img{height:38px;filter:brightness(0) invert(1);}
+  nav.mainnav{display:flex;align-items:center;gap:34px;}
+  nav.mainnav a{
+    font-size:15px;font-weight:500;color:var(--navy);
+    position:relative;padding:6px 0;transition:color .25s;
+  }
+  header.scrolled nav.mainnav a{color:#dfe6f0;}
+  nav.mainnav a::after{
+    content:'';position:absolute;bottom:0;right:0;left:auto;width:0;height:2px;
+    background:var(--gold);transition:width .3s ease;
+  }
+  nav.mainnav a:hover, nav.mainnav a.active{color:var(--gold);}
+  nav.mainnav a:hover::after, nav.mainnav a.active::after{width:100%;}
+  .header-cta{
+    display:flex;align-items:center;gap:14px;
+  }
+  .btn-cta-mini{
+    background:var(--gold);color:var(--navy);
+    padding:10px 22px;border-radius:3px;font-weight:700;font-size:14px;
+    transition:background .25s, transform .25s;
+  }
+  .btn-cta-mini:hover{background:var(--gold-light);transform:translateY(-2px);}
+  .burger{display:none;flex-direction:column;gap:5px;padding:6px;}
+  .burger span{width:24px;height:2px;background:var(--navy);transition:.3s;}
+  header.scrolled .burger span{background:#fff;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;min-height:100vh;background:var(--navy);
+    display:flex;align-items:center;overflow:hidden;
+  }
+  .hero-bg-shape{
+    position:absolute;inset:0;
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy) 42%, var(--navy-3) 42%, var(--navy-2) 100%);
+    clip-path:polygon(0 0,100% 0,100% 100%,0 100%);
+  }
+  .hero-diag{
+    position:absolute;top:0;bottom:0;right:38%;width:2px;
+    background:linear-gradient(var(--gold), transparent 80%);
+    opacity:.6;
+    transform:skewX(-18deg);
+  }
+  .hero .wrap{
+    position:relative;z-index:2;
+    display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;
+    padding-top:110px;padding-bottom:70px;
+  }
+  .hero-copy .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    color:var(--gold-light);font-size:14px;font-weight:700;letter-spacing:.02em;
+    margin-bottom:22px;
+    opacity:0;transform:translateY(14px);
+    animation:riseIn .7s ease .15s forwards;
+  }
+  .eyebrow::before{content:'';width:26px;height:2px;background:var(--gold);display:inline-block;}
+  .hero-copy h1{
+    color:#fff;font-size:clamp(32px,4.4vw,54px);line-height:1.28;font-weight:800;
+    margin-bottom:22px;max-width:600px;
+    opacity:0;transform:translateY(18px);
+    animation:riseIn .8s ease .3s forwards;
+  }
+  .hero-copy h1 span{color:var(--gold);}
+  .hero-copy p{
+    color:#c3cddd;font-size:17px;line-height:1.9;max-width:520px;margin-bottom:34px;
+    opacity:0;transform:translateY(18px);
+    animation:riseIn .8s ease .45s forwards;
+  }
+  .hero-actions{
+    display:flex;gap:16px;flex-wrap:wrap;margin-bottom:44px;
+    opacity:0;transform:translateY(18px);
+    animation:riseIn .8s ease .6s forwards;
+  }
+  .btn-primary{
+    background:var(--gold);color:var(--navy);padding:15px 32px;border-radius:3px;
+    font-weight:700;font-size:15px;transition:transform .25s, box-shadow .25s, background .25s;
+    box-shadow:0 14px 30px -12px rgba(201,154,75,.55);
+  }
+  .btn-primary:hover{transform:translateY(-3px);background:var(--gold-light);}
+  .btn-outline{
+    border:1.5px solid rgba(255,255,255,.35);color:#fff;padding:14px 30px;border-radius:3px;
+    font-weight:700;font-size:15px;transition:.25s;
+  }
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:12px;
+    border:1px solid rgba(255,255,255,.18);padding:10px 18px;border-radius:40px;
+    color:#dfe6f0;font-size:13.5px;
+    opacity:0;transform:translateY(18px);
+    animation:riseIn .8s ease .75s forwards;
+  }
+  .hero-badge b{color:var(--gold-light);font-weight:800;}
+  .hero-visual{
+    position:relative;
+    opacity:0;transform:translateX(24px);
+    animation:riseInX .9s ease .35s forwards;
+  }
+  .hero-visual .frame{
+    position:relative;border-radius:6px;overflow:hidden;
+    box-shadow:0 40px 70px -30px rgba(0,0,0,.6);
+    clip-path:polygon(8% 0,100% 0,100% 92%,92% 100%,0 100%,0 8%);
+  }
+  .hero-visual img{width:100%;display:block;}
+  .hero-visual .corner-gold{
+    position:absolute;inset:-10px;border:1px solid var(--gold);
+    clip-path:polygon(8% 0,100% 0,100% 92%,92% 100%,0 100%,0 8%);
+    pointer-events:none;opacity:.55;
+  }
+  @keyframes riseIn{to{opacity:1;transform:translateY(0);}}
+  @keyframes riseInX{to{opacity:1;transform:translateX(0);}}
+
+  .scroll-hint{
+    position:absolute;bottom:26px;right:50%;transform:translateX(50%);
+    color:#96a3b8;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:8px;
+    z-index:2;
+  }
+  .scroll-hint .line{width:1px;height:34px;background:linear-gradient(#c99a4b,transparent);animation:pulse 2s ease infinite;}
+  @keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+  /* ---------- PILLARS STRIP ---------- */
+  .pillars{
+    background:var(--white);border-bottom:1px solid var(--line);
+    position:relative;z-index:3;margin-top:-2px;
+  }
+  .pillars .wrap{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    padding:0;
+  }
+  .pillar{
+    display:flex;align-items:center;gap:16px;padding:30px 26px;
+    border-left:1px solid var(--line);
+  }
+  .pillar:first-child{border-right:none;}
+  .pillar .ic{
+    width:46px;height:46px;flex:none;border-radius:50%;
+    background:var(--cream);display:flex;align-items:center;justify-content:center;
+    color:var(--gold);
+  }
+  .pillar .ic svg{width:22px;height:22px;}
+  .pillar h4{font-size:16px;margin-bottom:3px;color:var(--navy);}
+  .pillar p{font-size:13.5px;color:var(--muted);}
+
+  /* ---------- SECTION HEADS ---------- */
+  .section{padding:110px 0;}
+  .section.tight{padding:90px 0;}
+  .sec-head{max-width:640px;margin-bottom:56px;}
+  .sec-head .tag{
+    color:var(--gold);font-weight:700;font-size:13.5px;margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .sec-head .tag::before{content:'';width:22px;height:2px;background:var(--gold);}
+  .sec-head h2{font-size:clamp(26px,3.2vw,38px);color:var(--navy);line-height:1.3;font-weight:800;}
+  .sec-head p.lead{margin-top:16px;color:var(--muted);font-size:16px;line-height:1.85;}
+
+  /* Entrance animations only apply when JS is confirmed running (html.js-anim).
+     Without JS everything stays fully visible instead of stuck at opacity:0. */
+  .js-anim .reveal{
+    opacity:0;transform:translateY(30px);
+    transition:opacity .8s cubic-bezier(.16,.8,.24,1), transform .8s cubic-bezier(.16,.8,.24,1);
+  }
+  .js-anim .reveal.reveal-right{transform:translateX(90px);}
+  .js-anim .reveal.reveal-left{transform:translateX(-90px);}
+  .js-anim .reveal.reveal-pop{transform:translateY(24px) scale(.88);}
+  .js-anim .reveal.reveal-pop-left{transform:translateX(-80px) scale(.9);}
+  .js-anim .reveal.reveal-pop-right{transform:translateX(80px) scale(.9);}
+  .js-anim .reveal.in{opacity:1;transform:translate(0,0) scale(1);}
+
+  /* staggered groups (pillars, list items, chips, cards) */
+  .js-anim .stagger-item{
+    opacity:0;transform:translateY(22px) scale(.94);
+    transition:opacity .6s cubic-bezier(.16,.8,.24,1), transform .6s cubic-bezier(.16,.8,.24,1);
+  }
+  .js-anim .stagger-item.side-in{transform:translateX(46px) scale(.97);}
+  .js-anim .stagger-group.in .stagger-item{opacity:1;transform:translate(0,0) scale(1);}
+  .js-anim .stagger-group.in .stagger-item:nth-child(1){transition-delay:.05s}
+  .js-anim .stagger-group.in .stagger-item:nth-child(2){transition-delay:.14s}
+  .js-anim .stagger-group.in .stagger-item:nth-child(3){transition-delay:.23s}
+  .js-anim .stagger-group.in .stagger-item:nth-child(4){transition-delay:.32s}
+  .js-anim .stagger-group.in .stagger-item:nth-child(5){transition-delay:.41s}
+
+  /* ---------- ABOUT ---------- */
+  #about{background:var(--white);}
+  .about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:70px;align-items:center;}
+  .about-visual{position:relative;}
+  .about-visual .photo{
+    border-radius:4px;overflow:hidden;
+    clip-path:polygon(0 0,100% 0,100% 88%,88% 100%,0 100%);
+    box-shadow:0 30px 60px -28px rgba(11,30,61,.35);
+  }
+  .about-visual::before{
+    content:'';position:absolute;top:-18px;right:-18px;width:120px;height:120px;
+    border:1px solid var(--gold);opacity:.5;z-index:-1;
+  }
+  .license-tag{
+    position:absolute;bottom:-22px;right:-18px;background:var(--navy);color:#fff;
+    padding:14px 20px;border-radius:3px;font-size:13px;box-shadow:0 20px 34px -16px rgba(11,30,61,.5);
+    display:flex;align-items:center;gap:10px;
+  }
+  .license-tag b{color:var(--gold-light);font-family:'Cairo',sans-serif;font-size:15px;}
+  .about-copy p{color:var(--ink);font-size:15.5px;line-height:2;margin-bottom:18px;}
+  .about-copy p:last-of-type{margin-bottom:28px;}
+  .about-copy .callout{
+    border-right:3px solid var(--gold);background:var(--cream);
+    padding:20px 24px;font-size:15px;line-height:1.9;color:var(--navy);border-radius:0 4px 4px 0;
+  }
+
+  /* ---------- SERVICES ---------- */
+  #services{background:var(--navy);position:relative;overflow:hidden;}
+  #services::before{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(11,30,61,0) 0%, rgba(11,30,61,.4) 100%);
+    pointer-events:none;
+  }
+  #services .sec-head h2{color:#fff;}
+  #services .sec-head p.lead{color:#aab6c8;}
+  #services .sec-head .tag{color:var(--gold-light);}
+  .tabs-bar{
+    display:flex;gap:10px;flex-wrap:wrap;margin-bottom:44px;position:relative;z-index:2;
+  }
+  .tab-btn{
+    padding:13px 22px;border-radius:3px;font-size:14.5px;font-weight:700;
+    border:1px solid rgba(255,255,255,.16);color:#c7d0e0;transition:.3s;
+  }
+  .tab-btn:hover{border-color:var(--gold);color:#fff;}
+  .tab-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+
+  .tab-panels{position:relative;z-index:2;}
+  .tab-panel{display:none;grid-template-columns:1fr .8fr;gap:56px;align-items:center;}
+  .tab-panel.active{display:grid;}
+  .tab-panel h3{color:#fff;font-size:24px;margin-bottom:8px;}
+  .tab-panel .tagline{color:var(--gold-light);font-size:14.5px;margin-bottom:26px;}
+  .service-list{display:flex;flex-direction:column;gap:14px;}
+  .service-item{
+    display:flex;align-items:flex-start;gap:16px;
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+    padding:16px 18px;border-radius:5px;transition:.3s;
+  }
+  .service-item:hover{background:rgba(255,255,255,.08);border-color:var(--gold);transform:translateX(-4px);}
+  .service-item .num{
+    flex:none;width:32px;height:32px;border-radius:50%;border:1px solid var(--gold);
+    color:var(--gold-light);display:flex;align-items:center;justify-content:center;
+    font-size:12.5px;font-weight:700;font-family:'Cairo',sans-serif;
+  }
+  .service-item p{color:#dbe2ee;font-size:14.8px;line-height:1.7;}
+  .js-anim .tab-content-side{
+    opacity:0;transform:translateX(56px);
+    transition:opacity .65s cubic-bezier(.16,.8,.24,1), transform .65s cubic-bezier(.16,.8,.24,1);
+  }
+  .js-anim .tab-content-side.in{opacity:1;transform:translateX(0);}
+  .tab-visual{position:relative;}
+  .js-anim .tab-visual{
+    opacity:0;transform:translateX(-64px) scale(.94);
+    transition:opacity .65s cubic-bezier(.16,.8,.24,1) .08s, transform .65s cubic-bezier(.16,.8,.24,1) .08s;
+  }
+  .js-anim .tab-visual.in{opacity:1;transform:translateX(0) scale(1);}
+  .tab-visual .photo{
+    border-radius:5px;overflow:hidden;
+    clip-path:polygon(10% 0,100% 0,100% 100%,0 100%,0 12%);
+    box-shadow:0 30px 60px -22px rgba(0,0,0,.55);
+  }
+  .tab-visual .frame-line{
+    position:absolute;inset:14px -14px -14px 14px;border:1px solid var(--gold);opacity:.4;z-index:-1;
+  }
+
+  /* ---------- WHY US ---------- */
+  #why{background:var(--cream);}
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+  .why-check{display:flex;flex-direction:column;gap:16px;}
+  .why-item{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);}
+  .why-item:last-child{border-bottom:none;}
+  .why-item .check{
+    flex:none;width:28px;height:28px;border-radius:50%;background:var(--navy);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .why-item .check svg{width:14px;height:14px;stroke:var(--gold-light);}
+  .why-item p{font-size:15.5px;color:var(--navy);font-weight:500;}
+  .why-panel{
+    background:var(--navy);border-radius:6px;padding:44px 36px;color:#fff;position:relative;overflow:hidden;
+  }
+  .why-panel::after{
+    content:'';position:absolute;bottom:0;left:0;width:100%;height:100%;
+    background:radial-gradient(circle at 20% 100%, rgba(201,154,75,.18), transparent 60%);
+  }
+  .why-panel h3{font-size:22px;margin-bottom:16px;position:relative;}
+  .why-panel p{color:#b8c3d6;font-size:15px;line-height:1.9;margin-bottom:26px;position:relative;}
+  .why-quote{
+    border-right:2px solid var(--gold);padding-right:16px;font-family:'Cairo',sans-serif;
+    font-size:17px;font-weight:700;color:var(--gold-light);position:relative;
+  }
+
+  /* ---------- VALUES ---------- */
+  #values{background:var(--white);}
+  .vm-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:50px;}
+  .vm-card{
+    border:1px solid var(--line);border-radius:6px;padding:32px 30px;transition:.3s;
+  }
+  .vm-card:hover{border-color:var(--gold);box-shadow:0 20px 40px -28px rgba(11,30,61,.3);transform:translateY(-4px);}
+  .vm-card .ic{
+    width:50px;height:50px;border-radius:50%;background:var(--navy);color:var(--gold-light);
+    display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  }
+  .vm-card .ic svg{width:22px;height:22px;}
+  .vm-card h3{font-size:19px;color:var(--navy);margin-bottom:10px;}
+  .vm-card p{font-size:14.8px;color:var(--muted);line-height:1.85;}
+
+  .values-list{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;}
+  .value-chip{
+    text-align:center;padding:26px 12px;border-radius:6px;background:var(--cream);
+    transition:.3s;cursor:default;
+  }
+  .value-chip:hover{background:var(--navy);}
+  .value-chip:hover h4{color:#fff;}
+  .value-chip:hover p{color:#aab6c8;}
+  .value-chip .ic{
+    width:44px;height:44px;margin:0 auto 14px;border-radius:50%;
+    background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+    color:var(--gold);transition:.3s;
+  }
+  .value-chip:hover .ic{background:rgba(255,255,255,.08);border-color:var(--gold);}
+  .value-chip .ic svg{width:20px;height:20px;}
+  .value-chip h4{font-size:14.5px;color:var(--navy);margin-bottom:6px;transition:.3s;font-family:'Cairo',sans-serif;}
+  .value-chip p{font-size:11.5px;color:var(--muted);line-height:1.5;transition:.3s;}
+
+  /* ---------- CONTACT ---------- */
+  #contact{
+    background:var(--navy);position:relative;overflow:hidden;
+  }
+  .contact-shape{
+    position:absolute;left:-10%;top:-30%;width:60%;height:160%;
+    background:var(--navy-3);opacity:.6;
+    clip-path:polygon(20% 0,100% 0,80% 100%,0 100%);
+  }
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;position:relative;z-index:2;}
+  .contact-copy h2{color:#fff;font-size:clamp(26px,3vw,36px);line-height:1.35;margin-bottom:18px;}
+  .contact-copy p{color:#b8c3d6;font-size:15.5px;line-height:1.9;margin-bottom:30px;max-width:440px;}
+  .contact-info{display:flex;flex-direction:column;gap:16px;}
+  .contact-info .row{display:flex;align-items:center;gap:14px;color:#dfe6f0;font-size:14.5px;}
+  .contact-info .row .ic{
+    width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
+    display:flex;align-items:center;justify-content:center;color:var(--gold-light);flex:none;
+  }
+  .contact-info .row .ic svg{width:16px;height:16px;}
+
+  .contact-form{
+    background:#fff;border-radius:8px;padding:36px 32px;box-shadow:0 40px 70px -30px rgba(0,0,0,.5);
+  }
+  .contact-form h3{color:var(--navy);font-size:19px;margin-bottom:22px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px;font-weight:500;}
+  .field input, .field textarea{
+    width:100%;border:1px solid var(--line);border-radius:4px;padding:12px 14px;
+    font-family:'Tajawal',sans-serif;font-size:14.5px;color:var(--ink);background:var(--cream);
+    transition:border .25s, background .25s;
+  }
+  .field input:focus, .field textarea:focus{outline:none;border-color:var(--gold);background:#fff;}
+  .field textarea{resize:vertical;min-height:90px;}
+  .btn-submit{
+    width:100%;background:var(--navy);color:#fff;padding:15px;border-radius:4px;
+    font-weight:700;font-size:15px;transition:.3s;
+  }
+  .btn-submit:hover{background:var(--gold);color:var(--navy);}
+  .form-note{font-size:12px;color:var(--muted);margin-top:12px;text-align:center;}
+  .form-success{
+    display:none;text-align:center;padding:30px 10px;
+  }
+  .form-success.show{display:block;}
+  .form-success .ic{
+    width:56px;height:56px;border-radius:50%;background:var(--cream);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+  }
+  .form-success .ic svg{width:26px;height:26px;}
+  .form-success h4{color:var(--navy);margin-bottom:8px;font-size:17px;}
+  .form-success p{color:var(--muted);font-size:14px;}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:#081428;padding:36px 0;}
+  footer .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+  footer .f-brand{display:flex;align-items:center;gap:10px;}
+  footer .f-brand img{height:30px;filter:brightness(0) invert(1);opacity:.85;}
+  footer p{color:#7686a0;font-size:13px;}
+  footer .f-license{color:#7686a0;font-size:13px;}
+
+  /* ---------- BACK TO TOP ---------- */
+  .totop{
+    position:fixed;bottom:26px;left:26px;z-index:150;
+    width:46px;height:46px;border-radius:50%;background:var(--navy);color:var(--gold-light);
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transform:translateY(10px);
+    transition:.3s;box-shadow:0 14px 30px -12px rgba(0,0,0,.4);
+  }
+  .totop.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+  .totop svg{width:18px;height:18px;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:960px){
+    nav.mainnav{display:none;}
+    .burger{display:flex;}
+    .hero .wrap{grid-template-columns:1fr;text-align:center;padding-top:130px;}
+    .hero-copy p{margin-inline:auto;}
+    .hero-actions{justify-content:center;}
+    .hero-badge{margin-inline:auto;}
+    .hero-visual{max-width:380px;margin:0 auto;}
+    .pillars .wrap{grid-template-columns:1fr;}
+    .pillar{border-left:none;border-bottom:1px solid var(--line);}
+    .about-grid{grid-template-columns:1fr;}
+    .about-visual{max-width:360px;margin:0 auto 40px;}
+    .tab-panel{grid-template-columns:1fr;}
+    .tab-visual{order:-1;max-width:340px;margin:0 auto 30px;}
+    .why-grid{grid-template-columns:1fr;}
+    .vm-grid{grid-template-columns:1fr;}
+    .values-list{grid-template-columns:repeat(2,1fr);}
+    .contact-grid{grid-template-columns:1fr;}
+    footer .wrap{flex-direction:column;text-align:center;}
+  }
+  @media (max-width:560px){
+    .section{padding:76px 0;}
+    .wrap{padding:0 20px;}
+  }
+  /* On narrow screens keep entrance travel small so nothing can widen the page,
+     and stop decorative offset frames from poking past the viewport edge. */
+  @media (max-width:960px){
+    .js-anim .reveal.reveal-right,
+    .js-anim .reveal.reveal-pop-right{transform:translateX(28px) scale(.97);}
+    .js-anim .reveal.reveal-left,
+    .js-anim .reveal.reveal-pop-left{transform:translateX(-28px) scale(.97);}
+    .js-anim .stagger-item.side-in{transform:translateX(20px) scale(.98);}
+    .js-anim .tab-content-side{transform:translateX(24px);}
+    .js-anim .tab-visual{transform:translateX(-24px) scale(.97);}
+    .about-visual::before{display:none;}
+    .tab-visual .frame-line{display:none;}
+    .license-tag{right:auto;left:0;bottom:-18px;}
+  }
+
+  /* Mobile nav drawer */
+  .mnav{
+    position:fixed;inset:0 0 0 auto;width:78%;max-width:320px;background:var(--navy);
+    z-index:300;transform:translateX(100%);
+    transition:transform .35s ease, visibility .35s ease;
+    visibility:hidden;
+    padding:100px 30px 30px;display:flex;flex-direction:column;gap:26px;
+  }
+  .mnav.open{transform:translateX(0);visibility:visible;}
+  .mnav a{color:#e6ecf5;font-size:17px;font-weight:600;}
+  .mnav a:hover{color:var(--gold);}
+  .mnav-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:290;
+    opacity:0;pointer-events:none;transition:.3s;
+  }
+  .mnav-overlay.open{opacity:1;pointer-events:auto;}
+  .mnav-close{position:absolute;top:26px;left:26px;color:#fff;font-size:26px;}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header id="siteHeader">
+  <div class="wrap">
+    <div class="brand"><img src="images/logo_crop.png" alt="شعار عبدالرحمن عباس"></div>
+    <nav class="mainnav">
+      <a href="#home" class="active">الرئيسية</a>
+      <a href="#about">من نحن</a>
+      <a href="#services">خدماتنا</a>
+      <a href="#why">لماذا نحن</a>
+      <a href="#values">قيمنا</a>
+    </nav>
+    <div class="header-cta">
+      <a href="#contact" class="btn-cta-mini">تواصل معنا</a>
+      <button class="burger" id="burgerBtn" aria-label="افتح القائمة"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mnav-overlay" id="mnavOverlay"></div>
+<nav class="mnav" id="mnav">
+  <button class="mnav-close" id="mnavClose" aria-label="إغلاق القائمة">&times;</button>
+  <a href="#home">الرئيسية</a>
+  <a href="#about">من نحن</a>
+  <a href="#services">خدماتنا</a>
+  <a href="#why">لماذا نحن</a>
+  <a href="#values">قيمنا</a>
+  <a href="#contact">تواصل معنا</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="hero-bg-shape"></div>
+  <div class="hero-diag"></div>
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="eyebrow">محاسب قانوني معتمد — ترخيص رقم 1899</div>
+      <h1>أرقام أوضح، ورؤية <span>أدق</span> لقرارات أعمالك</h1>
+      <p>مكتب عبدالرحمن عباس متخصص في خدمات المحاسبة والمراجعة والتدقيق والاستشارات المالية، نساعد الشركات وأصحاب الأعمال على بناء بيئة مالية أكثر تنظيمًا ووضوحًا وكفاءة.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">تواصل معنا</a>
+        <a href="#services" class="btn-outline">استعرض خدماتنا</a>
+      </div>
+      <div class="hero-badge">نؤمن بأن المحاسبة لا تقتصر على تسجيل الأرقام، بل تدعم <b>نمو منشأتك واستقرارها</b></div>
+    </div>
+    <div class="hero-visual">
+      <div class="frame"><img src="images/hero_man.jpg" alt="محاسب يراجع تقارير مالية"></div>
+      <div class="corner-gold"></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>مرر للأسفل</span><span class="line"></span></div>
+</section>
+
+<!-- ============ PILLARS ============ -->
+<section class="pillars">
+  <div class="wrap stagger-group" id="pillarsGroup">
+    <div class="pillar stagger-item">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="5"/></svg></div>
+      <div><h4>الدقة</h4><p>أرقام موثوقة بلا هامش خطأ</p></div>
+    </div>
+    <div class="pillar stagger-item">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/></svg></div>
+      <div><h4>الرقابة</h4><p>أنظمة داخلية تحمي منشأتك</p></div>
+    </div>
+    <div class="pillar stagger-item">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,17 9,11 13,15 21,6"/><polyline points="14,6 21,6 21,13"/></svg></div>
+      <div><h4>النمو</h4><p>قرارات مالية تدعم التوسع</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-visual reveal reveal-right">
+        <div class="photo"><img loading="lazy" decoding="async" src="images/about_man.jpg" alt="عبدالرحمن عباس، محاسب قانوني معتمد"></div>
+        <div class="license-tag reveal reveal-pop" id="licenseTag" style="transition-delay:.35s">مرخّص رسميًا<br><b>ترخيص رقم 1899</b></div>
+      </div>
+      <div class="about-copy reveal reveal-left">
+        <div class="sec-head" style="margin-bottom:26px;">
+          <div class="tag">من نحن</div>
+          <h2>شريك موثوق لبناء بيئة مالية أكثر وضوحًا</h2>
+        </div>
+        <p>المحاسب القانوني عبدالرحمن عباس مكتب مهني متخصص في تقديم خدمات المحاسبة والمراجعة والتدقيق والاستشارات المالية والمحاسبية، ونهدف من خلال خدماتنا إلى مساعدة الشركات والمنشآت وأصحاب الأعمال على بناء بيئة مالية أكثر تنظيمًا ووضوحًا وكفاءة.</p>
+        <p>نعمل على تحويل البيانات والأرقام المالية إلى معلومات واضحة تساعد الإدارة وأصحاب الأعمال على فهم الأداء المالي، وتحسين الرقابة، وإدارة الموارد، واتخاذ قرارات أكثر ثقة.</p>
+        <div class="callout">نؤمن بأن المحاسبة لا تقتصر على تسجيل الأرقام، بل تمثل أساسًا مهمًا لفهم واقع المنشأة ودعم نموها واستقرارها.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="tag">خدماتنا المهنية</div>
+      <h2>كل ما تحتاجه منشأتك تحت سقف واحد</h2>
+      <p class="lead">من ضبط الدفاتر اليومية إلى الاستشارات الاستراتيجية، اختر الخدمة لاستعراض تفاصيلها.</p>
+    </div>
+
+    <div class="tabs-bar reveal">
+      <button class="tab-btn active" data-tab="t1">المحاسبة وإدارة الحسابات</button>
+      <button class="tab-btn" data-tab="t2">المراجعة والتدقيق</button>
+      <button class="tab-btn" data-tab="t3">الاستشارات المالية</button>
+      <button class="tab-btn" data-tab="t4">خدمات الشركات والمنشآت</button>
+    </div>
+
+    <div class="tab-panels">
+      <div class="tab-panel active" id="t1">
+        <div class="tab-content-side">
+          <h3>المحاسبة وإدارة الحسابات</h3>
+          <div class="tagline">تنظيم مالي أدق... ورؤية أوضح لأعمالك</div>
+          <div class="service-list stagger-group">
+            <div class="service-item stagger-item side-in"><span class="num">1</span><p>إعداد وتنظيم السجلات والدفاتر المحاسبية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">2</span><p>إعداد القوائم والتقارير المالية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">3</span><p>مراجعة الحسابات والعمليات المالية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">4</span><p>تنظيم الدورة المستندية والإجراءات المحاسبية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">5</span><p>متابعة الإيرادات والمصروفات والتدفقات النقدية.</p></div>
+          </div>
+        </div>
+        <div class="tab-visual"><div class="photo"><img src="images/hero_man.jpg" alt="إدارة الحسابات"></div><div class="frame-line"></div></div>
+      </div>
+
+      <div class="tab-panel" id="t2">
+        <div class="tab-content-side">
+          <h3>المراجعة والتدقيق</h3>
+          <div class="tagline">رقابة أفضل تبدأ بمعلومات مالية أكثر وضوحًا</div>
+          <div class="service-list stagger-group">
+            <div class="service-item stagger-item side-in"><span class="num">1</span><p>مراجعة وتدقيق الحسابات والقوائم المالية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">2</span><p>اكتشاف الأخطاء والمخاطر المالية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">3</span><p>تقييم الإجراءات والأنظمة الرقابية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">4</span><p>تقديم توصيات لتحسين الأداء المالي.</p></div>
+          </div>
+        </div>
+        <div class="tab-visual"><div class="photo"><img loading="lazy" decoding="async" src="images/audit_man.jpg" alt="المراجعة والتدقيق"></div><div class="frame-line"></div></div>
+      </div>
+
+      <div class="tab-panel" id="t3">
+        <div class="tab-content-side">
+          <h3>الاستشارات المالية والمحاسبية</h3>
+          <div class="tagline">أرقام أوضح... قرارات أكثر ثقة</div>
+          <div class="service-list stagger-group">
+            <div class="service-item stagger-item side-in"><span class="num">1</span><p>تحليل الوضع المالي للمنشأة.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">2</span><p>دعم الإدارة في اتخاذ القرارات المالية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">3</span><p>إعداد وتحليل الموازنات والتوقعات المالية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">4</span><p>تحسين إدارة التكاليف والمصروفات.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">5</span><p>تقديم حلول محاسبية تناسب طبيعة ونشاط المنشأة.</p></div>
+          </div>
+        </div>
+        <div class="tab-visual"><div class="photo"><img loading="lazy" decoding="async" src="images/team.jpg" alt="استشارات مالية"></div><div class="frame-line"></div></div>
+      </div>
+
+      <div class="tab-panel" id="t4">
+        <div class="tab-content-side">
+          <h3>خدمات الشركات والمنشآت</h3>
+          <div class="tagline">لأن الأرقام الصحيحة تصنع قرارات صحيحة</div>
+          <div class="service-list stagger-group">
+            <div class="service-item stagger-item side-in"><span class="num">1</span><p>تأسيس وتنظيم الأنظمة المحاسبية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">2</span><p>تصميم دليل الحسابات.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">3</span><p>بناء نظام مالي وإداري متكامل.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">4</span><p>مراجعة العمليات والإجراءات المالية.</p></div>
+            <div class="service-item stagger-item side-in"><span class="num">5</span><p>تطوير الرقابة الداخلية.</p></div>
+          </div>
+        </div>
+        <div class="tab-visual"><div class="photo"><img loading="lazy" decoding="async" src="images/building.png" alt="خدمات الشركات والمنشآت"></div><div class="frame-line"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY US ============ -->
+<section class="section" id="why">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="tag">لماذا تختارنا</div>
+      <h2>لأن الأرقام الصحيحة تصنع قرارات صحيحة</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-check stagger-group" id="whyGroup">
+        <div class="why-item stagger-item side-in"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg></span><p>معلومات مالية أكثر وضوحًا.</p></div>
+        <div class="why-item stagger-item side-in"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg></span><p>تقارير تساعدك على اتخاذ القرار.</p></div>
+        <div class="why-item stagger-item side-in"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg></span><p>رقابة أفضل على أموالك.</p></div>
+        <div class="why-item stagger-item side-in"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg></span><p>تقليل الأخطاء والمخاطر المالية.</p></div>
+        <div class="why-item stagger-item side-in"><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg></span><p>تنظيم محاسبيًا يتناسب مع نمو أعمالك.</p></div>
+      </div>
+      <div class="why-panel reveal reveal-pop-left">
+        <h3>رقابة أفضل تبدأ بمعلومات أوضح</h3>
+        <p>نساعدك على تحويل الأرقام المتناثرة إلى نظام مالي متكامل، يمنحك رؤية دقيقة لأداء منشأتك في كل مرحلة من مراحل نموها.</p>
+        <div class="why-quote">تنظيم مالي أدق... ورؤية أوضح لأعمالك.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VALUES ============ -->
+<section class="section" id="values">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="tag">رؤيتنا ورسالتنا وقيمنا</div>
+      <h2>ما الذي يوجّه عملنا كل يوم</h2>
+    </div>
+
+    <div class="vm-grid stagger-group" id="vmGroup">
+      <div class="vm-card stagger-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.8" fill="currentColor"/></svg></div>
+        <h3>رؤيتنا</h3>
+        <p>أن نكون شريكًا مهنيًا موثوقًا للشركات وأصحاب الأعمال، ونساهم في بناء منشآت أكثر تنظيمًا واستقرارًا ونموًا.</p>
+      </div>
+      <div class="vm-card stagger-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.4-4 8-9 8-1.4 0-2.7-.3-3.9-.8L3 20l1-4.2C3.4 14.6 3 13.3 3 12c0-4.4 4-8 9-8s9 3.6 9 8z"/></svg></div>
+        <h3>رسالتنا</h3>
+        <p>تقديم خدمات محاسبية ومراجعة واستشارات مالية بمهنية وموضوعية، تساعد عملاءنا على فهم أرقامهم وإدارة مواردهم واتخاذ قرارات أكثر ثقة.</p>
+      </div>
+    </div>
+
+    <div class="values-list stagger-group" id="valuesGroup">
+      <div class="value-chip stagger-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3,17 9,11 13,15 21,6"/><polyline points="14,6 21,6 21,13"/></svg></div>
+        <h4>الدقة</h4><p>أرقام موثوقة دائمًا</p>
+      </div>
+      <div class="value-chip stagger-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.3 4.6L19 8.3l-3.5 3.4.8 4.8L12 14.3 7.7 16.5l.8-4.8L5 8.3l4.7-.7z"/></svg></div>
+        <h4>النزاهة</h4><p>مبادئ لا نساوم عليها</p>
+      </div>
+      <div class="value-chip stagger-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 12l3 3 7-7"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h4>الثقة</h4><p>علاقات مبنية على الشفافية</p>
+      </div>
+      <div class="value-chip stagger-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 21V9"/></svg></div>
+        <h4>الاحترافية</h4><p>معايير عمل عالية</p>
+      </div>
+      <div class="value-chip stagger-item">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20V10M18 20V4M6 20v-6"/></svg></div>
+        <h4>التطوير</h4><p>تحسين مستمر لخدماتنا</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section" id="contact">
+  <div class="contact-shape"></div>
+  <div class="wrap">
+    <div class="contact-grid">
+      <div class="contact-copy reveal reveal-right">
+        <div class="tag" style="color:var(--gold-light);font-weight:700;font-size:13.5px;margin-bottom:14px;display:flex;align-items:center;gap:10px;"><span style="width:22px;height:2px;background:var(--gold);display:inline-block;"></span>تواصل معنا</div>
+        <h2>لنبنِ معًا بيئة مالية أكثر وضوحًا</h2>
+        <p>تواصل مع مكتب عبدالرحمن عباس للمحاسبة القانونية لمناقشة احتياجات منشأتك، وابدأ بخطوة نحو تنظيم مالي أدق.</p>
+        <div class="contact-info stagger-group" id="contactInfoGroup">
+          <div class="row stagger-item side-in"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 3a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.4c1 .4 2 .6 3 .7a2 2 0 0 1 1.6 2z"/></svg></span>هاتف / واتساب — أضف رقمك هنا</div>
+          <div class="row stagger-item side-in"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg></span>البريد الإلكتروني — أضف بريدك هنا</div>
+          <div class="row stagger-item side-in"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>الموقع — أضف عنوان المكتب هنا</div>
+        </div>
+      </div>
+
+      <div class="contact-form reveal reveal-pop-left">
+        <div id="formDefault">
+          <h3>اطلب استشارة</h3>
+          <form id="leadForm">
+            <div class="field"><label>الاسم</label><input type="text" required placeholder="اسمك الكامل"></div>
+            <div class="field"><label>البريد الإلكتروني أو الجوال</label><input type="text" required placeholder="example@email.com"></div>
+            <div class="field"><label>تفاصيل طلبك</label><textarea required placeholder="اكتب رسالتك هنا..."></textarea></div>
+            <button type="submit" class="btn-submit">إرسال الطلب</button>
+          </form>
+          <div class="form-note">هذا نموذج عرض توضيحي — لتفعيل الاستقبال الفعلي للرسائل يلزم ربطه ببريد أو خدمة نماذج.</div>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h4>تم استلام طلبك</h4>
+          <p>سيتم التواصل معك في أقرب وقت ممكن.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="f-brand"><img src="images/logo_crop.png" alt="شعار عبدالرحمن عباس"><p>عبدالرحمن عباس | محاسب قانوني معتمد</p></div>
+    <p class="f-license">ترخيص رقم 1899</p>
+    <p>© 2026 جميع الحقوق محفوظة</p>
+  </div>
+</footer>
+
+<button class="totop" id="toTop" aria-label="العودة للأعلى">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+try{
+  // header scroll state
+  const header = document.getElementById('siteHeader');
+  const toTop = document.getElementById('toTop');
+
+  // mobile nav
+  const burger = document.getElementById('burgerBtn');
+  const mnav = document.getElementById('mnav');
+  const overlay = document.getElementById('mnavOverlay');
+  const mnavClose = document.getElementById('mnavClose');
+  function openMnav(){ mnav.classList.add('open'); overlay.classList.add('open'); }
+  function closeMnav(){ mnav.classList.remove('open'); overlay.classList.remove('open'); }
+  burger.addEventListener('click', openMnav);
+  mnavClose.addEventListener('click', closeMnav);
+  overlay.addEventListener('click', closeMnav);
+  mnav.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMnav));
+
+  // scroll spy — offsets are cached once (and on resize) instead of read on every scroll tick
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav.mainnav a');
+  let sectionOffsets = [];
+  function cacheSectionOffsets(){
+    sectionOffsets = Array.from(sections).map(sec=>({ id: sec.getAttribute('id'), top: sec.offsetTop - 140 }));
+  }
+  cacheSectionOffsets();
+  window.addEventListener('resize', cacheSectionOffsets);
+
+  // single rAF-throttled scroll handler drives header state, back-to-top button, and scroll-spy
+  let scrollTicking = false;
+  function onScrollFrame(){
+    const y = window.scrollY;
+    header.classList.toggle('scrolled', y > 60);
+    toTop.classList.toggle('show', y > 500);
+    let current = '';
+    for(const s of sectionOffsets){ if(y >= s.top) current = s.id; }
+    navLinks.forEach(a=>{
+      a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+    });
+    scrollTicking = false;
+  }
+  window.addEventListener('scroll', ()=>{
+    if(!scrollTicking){
+      requestAnimationFrame(onScrollFrame);
+      scrollTicking = true;
+    }
+  }, {passive:true});
+
+  toTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+  // reveal on scroll (fade/slide/pop entrances for sections, images, cards)
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
+    });
+  }, {threshold:.15, rootMargin:'0px 0px -60px 0px'});
+  revealEls.forEach(el=>io.observe(el));
+
+  // staggered group entrances (pillars, list items, chips, cards)
+  const staggerGroups = document.querySelectorAll('.stagger-group');
+  const staggerIO = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){ entry.target.classList.add('in'); staggerIO.unobserve(entry.target); }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  staggerGroups.forEach(el=>staggerIO.observe(el));
+
+  // tabs — each switch triggers a fresh side-entrance + staggered pop-in
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  function animatePanelIn(panel){
+    const content = panel.querySelector('.tab-content-side');
+    const visual = panel.querySelector('.tab-visual');
+    const list = panel.querySelector('.service-list');
+    [content, visual, list].forEach(el=>{ if(el) el.classList.remove('in'); });
+    // force reflow so the animation restarts even if it played before
+    void panel.offsetWidth;
+    requestAnimationFrame(()=>{
+      if(content) content.classList.add('in');
+      if(visual) visual.classList.add('in');
+      if(list) list.classList.add('in');
+    });
+  }
+
+  tabBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      tabBtns.forEach(b=>b.classList.remove('active'));
+      tabPanels.forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById(btn.dataset.tab);
+      panel.classList.add('active');
+      animatePanelIn(panel);
+    });
+  });
+
+  // trigger the first tab's entrance once the services section scrolls into view
+  const servicesSection = document.getElementById('services');
+  const firstPanelIO = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        animatePanelIn(document.querySelector('.tab-panel.active'));
+        firstPanelIO.unobserve(entry.target);
+      }
+    });
+  }, {threshold:.2});
+  if(servicesSection) firstPanelIO.observe(servicesSection);
+
+  // demo form
+  const leadForm = document.getElementById('leadForm');
+  leadForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    document.getElementById('formDefault').style.display='none';
+    document.getElementById('formSuccess').classList.add('show');
+  });
+}catch(err){
+  // If any script above fails, drop the animation layer so all content is visible.
+  document.documentElement.className = document.documentElement.className.replace(' js-anim','');
+  console.error('Script error, animations disabled:', err);
+}
+</script>
+</body>
+</html>
